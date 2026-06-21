@@ -19,7 +19,7 @@ ROOM_RE = re.compile(
 
 
 def normalize_room(room: str) -> str:
-    """Приводит аудиторию к единому виду."""
+    """Приводим аудиторию к единому виду."""
     room = room.strip()                     # убираем пробелы по краям строки
     room = room.replace("–", "-")           # заменяем длинное тире на обычный дефис
     room = re.sub(r"\s+", "", room)         # убираем все лишние пробелы внутри аудитории
@@ -41,7 +41,7 @@ def normalize_room(room: str) -> str:
 
 
 def extract_rooms_from_line(line: str) -> list[str]:
-    """Достаёт все аудитории из одной строки текста."""
+    """Достаем все аудитории из одной строки текста."""
     # ищем все совпадения и сразу формализуем аудитории
     rooms = [normalize_room(match.group(0)) for match in ROOM_RE.finditer(line)]
 
