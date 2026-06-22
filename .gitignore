@@ -220,3 +220,8 @@ __marimo__/
 # Downloaded schedule files
 data/raw/
 data/parsed/
+
+# Local database
+*.db
+*.sqlite
+*.sqlite3
