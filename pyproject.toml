@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cmc-msu-roomkeeper"
+version = "0.1.0"
+description = "Telegram bot for finding and booking free classrooms at CMC MSU"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [
+    { name = "CMC MSU RoomKeeper Team" }
+]
+dependencies = [
+    "requests",
+    "beautifulsoup4",
+    "pdfplumber",
+    "sqlalchemy",
+    "python-telegram-bot[socks]",
+    "python-dotenv",
+    "PySocks",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "coverage",
+    "ruff",
+    "doit",
+    "build",
+    "sphinx",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
