@@ -75,3 +75,12 @@ def task_cleanup() -> dict[str, object]:
         ],
         "verbosity": 2,
     }
+
+
+def task_docs() -> dict[str, object]:
+    """Build HTML documentation."""
+
+    return {
+        "actions": ["python -m sphinx -b html docs docs/_build/html"],
+        "verbosity": 2,
+    }
