@@ -52,3 +52,10 @@ source = ["src/roomkeeper"]
 [tool.coverage.report]
 fail_under = 75
 show_missing = true
+
+[project.scripts]
+roomkeeper-bot = "roomkeeper.cli.bot:main"
+roomkeeper-init-db = "roomkeeper.cli.init_db:main"
+roomkeeper-update-schedule = "roomkeeper.cli.update_schedule:main"
+roomkeeper-import-schedule = "roomkeeper.cli.import_schedule:main"
+roomkeeper-db-stats = "roomkeeper.cli.db_stats:main"
