@@ -18,7 +18,6 @@ class BotConfig:
 
 def load_bot_config(load_env_file: bool = True) -> BotConfig:
     """Загружает настройки бота из переменных окружения."""
-
     if load_env_file:
         load_dotenv()
 

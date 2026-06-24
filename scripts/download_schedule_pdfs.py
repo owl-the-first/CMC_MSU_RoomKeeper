@@ -7,6 +7,7 @@ RAW_DIR = Path("data/raw")
 
 
 def main() -> None:
+    """Скачивает PDF-файлы с расписанием."""
     pdfs = find_schedule_pdfs()         # получаем список PDF-файлов
 
     print(f"PDF files to download: {len(pdfs)}")        # выводим количество файлов

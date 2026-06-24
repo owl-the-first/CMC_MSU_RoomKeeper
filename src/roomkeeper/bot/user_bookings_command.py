@@ -9,7 +9,6 @@ MAX_BOOKINGS_IN_MESSAGE = 10
 
 def get_user_bookings_usage() -> str:
     """Возвращает подсказку по команде /my_bookings."""
-
     return (
         "Использование:\n"
         "/my_bookings — показать ваши последние заявки"
@@ -18,7 +17,6 @@ def get_user_bookings_usage() -> str:
 
 def get_cancel_booking_usage() -> str:
     """Возвращает подсказку по команде /cancel_booking."""
-
     return (
         "Использование:\n"
         "/cancel_booking НОМЕР_ЗАЯВКИ\n\n"
@@ -31,7 +29,6 @@ def get_cancel_booking_usage() -> str:
 
 def parse_cancel_booking_request(args: Sequence[str]) -> int:
     """Разбирает аргументы команды отмены бронирования."""
-
     if len(args) != 1:
         raise ValueError(get_cancel_booking_usage())
 
@@ -48,7 +45,6 @@ def parse_cancel_booking_request(args: Sequence[str]) -> int:
 
 def format_status(status: str) -> str:
     """Возвращает понятное описание статуса заявки."""
-
     status_names = {
         "pending": "ожидает подтверждения",
         "approved": "подтверждена",
@@ -64,7 +60,6 @@ def format_user_bookings_message(
     room_names: dict[int, str],
 ) -> str:
     """Формирует сообщение со списком заявок пользователя."""
-
     if not bookings:
         return (
             "У вас пока нет заявок на бронирование.\n\n"

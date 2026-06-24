@@ -6,6 +6,7 @@ from roomkeeper.db.session import DEFAULT_DATABASE_URL, get_session_factory
 
 
 def main() -> None:
+    """Показывает краткую статистику базы данных."""
     # создаем фабрику сессий для работы с базой данных
     session_factory = get_session_factory()
 

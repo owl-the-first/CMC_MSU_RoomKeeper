@@ -8,6 +8,7 @@ SCHEDULE_JSON = Path("data/parsed/schedule_slots.json")
 
 
 def main() -> None:
+    """Импортирует распарсенное расписание в базу данных."""
     # проверяем наличие файла с расписанием
     if not SCHEDULE_JSON.exists():
         print("No parsed schedule found.")

@@ -10,7 +10,6 @@ from roomkeeper.search.free_rooms import find_free_rooms, get_room_availability
 
 def parse_args() -> argparse.Namespace:
     """Разбирает аргументы командной строки."""
-
     parser = argparse.ArgumentParser(
         description="Поиск свободных аудиторий по дате и времени."
     )
@@ -94,7 +93,6 @@ def format_conflict_for_room(conflict: str, room_name: str) -> str:
 
 def main() -> None:
     """Запускает поиск свободных аудиторий."""
-
     args = parse_args()
     booking_date = date.fromisoformat(args.date)
 

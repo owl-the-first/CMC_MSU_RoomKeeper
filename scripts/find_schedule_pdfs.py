@@ -2,6 +2,7 @@ from roomkeeper.parser.source_loader import find_schedule_pdfs
 
 
 def main() -> None:
+    """Показывает найденные PDF-файлы с расписанием."""
     # ищем PDF-файлы расписания
     pdfs = find_schedule_pdfs()
 

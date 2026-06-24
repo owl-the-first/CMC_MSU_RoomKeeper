@@ -7,6 +7,7 @@ RAW_DIR = Path("data/raw")
 
 
 def main() -> None:
+    """Показывает пример текста, извлечённого из PDF."""
     # получаем список PDF
     pdf_files = sorted(RAW_DIR.glob("*.pdf"))
 

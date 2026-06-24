@@ -10,7 +10,6 @@ SCHEDULE_JSON = Path("data/parsed/schedule_slots.json")
 
 def main() -> None:
     """Import parsed schedule slots from JSON to the database."""
-
     result = import_schedule_slots(SCHEDULE_JSON)
 
     print(f"Database: {DEFAULT_DATABASE_URL}")

@@ -32,7 +32,6 @@ class BookingCancelResult:
 
 def find_room_by_name(session: Session, room_name: str) -> Room | None:
     """Ищет аудиторию по точному названию."""
-
     normalized_room_name = room_name.strip()
 
     return session.scalar(select(Room).where(Room.name == normalized_room_name))
@@ -50,7 +49,6 @@ def create_booking_request(
     week_type: str = "all",
 ) -> BookingCreationResult:
     """Создаёт заявку на бронирование аудитории, если аудитория свободна."""
-
     room = find_room_by_name(session, room_name)
 
     if room is None:
@@ -119,7 +117,6 @@ def get_user_bookings(
     limit: int = 10,
 ) -> list[Booking]:
     """Возвращает последние заявки пользователя."""
-
     return list(
         session.scalars(
             select(Booking)
@@ -135,7 +132,6 @@ def get_room_names_for_bookings(
     bookings: list[Booking],
 ) -> dict[int, str]:
     """Возвращает названия аудиторий для списка заявок."""
-
     room_ids = {booking.room_id for booking in bookings}
 
     if not room_ids:
@@ -152,7 +148,6 @@ def cancel_user_booking(
     user_telegram_id: str,
 ) -> BookingCancelResult:
     """Отменяет заявку пользователя, если она принадлежит ему и ещё активна."""
-
     booking = session.scalar(
         select(Booking).where(
             Booking.id == booking_id,

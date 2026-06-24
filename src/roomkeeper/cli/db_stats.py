@@ -9,7 +9,6 @@ from roomkeeper.db.session import DEFAULT_DATABASE_URL, get_session_factory
 
 def main() -> None:
     """Print basic database statistics."""
-
     session_factory = get_session_factory(DEFAULT_DATABASE_URL)
 
     with session_factory() as session:

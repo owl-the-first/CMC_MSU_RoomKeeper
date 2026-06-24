@@ -18,7 +18,6 @@ OUTPUT_FILE = PARSED_DIR / "schedule_slots.json"
 
 def main() -> None:
     """Download schedule PDFs, parse them and save schedule slots to JSON."""
-
     RAW_DIR.mkdir(parents=True, exist_ok=True)
     PARSED_DIR.mkdir(parents=True, exist_ok=True)
 
