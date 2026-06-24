@@ -22,7 +22,6 @@ class BookRoomRequest:
 
 def get_book_command_usage() -> str:
     """Возвращает подсказку по использованию команды /book."""
-
     return (
         "Использование:\n"
         "/book АУДИТОРИЯ ДАТА НАЧАЛО КОНЕЦ [ТИП_НЕДЕЛИ] ЦЕЛЬ\n\n"
@@ -39,7 +38,6 @@ def get_book_command_usage() -> str:
 
 def parse_book_room_request(args: Sequence[str]) -> BookRoomRequest:
     """Разбирает аргументы команды /book."""
-
     if len(args) < 5:
         raise ValueError(get_book_command_usage())
 

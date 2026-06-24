@@ -29,13 +29,11 @@ from roomkeeper.search.free_rooms import find_free_rooms
 
 def get_session_factory(context: ContextTypes.DEFAULT_TYPE):
     """Достаёт фабрику сессий БД из данных приложения."""
-
     return context.application.bot_data.get("session_factory")
 
 
 async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Обрабатывает команду /start."""
-
     user = update.effective_user
     name = user.first_name if user and user.first_name else "студент"
 
@@ -56,7 +54,6 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
 
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Обрабатывает команду /help."""
-
     text = (
         "Доступные команды:\n\n"
         "/start — запустить бота\n"
@@ -77,7 +74,6 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
 
 async def free_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Обрабатывает команду /free."""
-
     if update.message is None:
         return
 
@@ -110,7 +106,6 @@ async def free_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
 
 async def book_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Обрабатывает команду /book."""
-
     if update.message is None:
         return
 
@@ -157,7 +152,6 @@ async def my_bookings_command(
     context: ContextTypes.DEFAULT_TYPE,
 ) -> None:
     """Обрабатывает команду /my_bookings."""
-
     if update.message is None:
         return
 
@@ -192,7 +186,6 @@ async def cancel_booking_command(
     context: ContextTypes.DEFAULT_TYPE,
 ) -> None:
     """Обрабатывает команду /cancel_booking."""
-
     if update.message is None:
         return
 

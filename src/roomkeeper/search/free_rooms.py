@@ -37,13 +37,11 @@ class RoomAvailability:
 
 def get_weekday_name(day: date) -> str:
     """Возвращает русское название дня недели для даты."""
-
     return WEEKDAY_NAMES[day.weekday()]
 
 
 def time_to_minutes(value: str) -> int:
     """Переводит время HH:MM или HH.MM в количество минут от начала дня."""
-
     normalized = value.strip().replace(".", ":")
     parts = normalized.split(":")
 
@@ -69,7 +67,6 @@ def times_intersect(
     second_end: str,
 ) -> bool:
     """Проверяет, пересекаются ли два временных интервала."""
-
     first_start_minutes = time_to_minutes(first_start)
     first_end_minutes = time_to_minutes(first_end)
     second_start_minutes = time_to_minutes(second_start)
@@ -86,7 +83,6 @@ def times_intersect(
 
 def normalize_week_type(week_type: str) -> str:
     """Приводит тип недели к одному из вариантов: all, even, odd."""
-
     aliases = {
         "": "all",
         "all": "all",
@@ -106,7 +102,6 @@ def normalize_week_type(week_type: str) -> str:
 
 def slot_affects_week(slot_week_type: str, requested_week_type: str) -> bool:
     """Проверяет, относится ли запись расписания к нужному типу недели."""
-
     slot_week_type = normalize_week_type(slot_week_type)
     requested_week_type = normalize_week_type(requested_week_type)
 
@@ -118,14 +113,12 @@ def slot_affects_week(slot_week_type: str, requested_week_type: str) -> bool:
 
 def format_schedule_conflict(slot: ScheduleSlot) -> str:
     """Готовит понятное описание конфликта с официальным расписанием."""
-
     title = slot.subject or slot.raw_text or "занято по расписанию"
     return f"{slot.start_time}-{slot.end_time}: {title}"
 
 
 def format_booking_conflict(booking: Booking) -> str:
     """Готовит понятное описание конфликта с пользовательской бронью."""
-
     purpose = booking.purpose or "бронь пользователя"
     user_name = booking.user_name or booking.user_telegram_id
     return f"{booking.start_time}-{booking.end_time}: {purpose} ({user_name})"
@@ -141,7 +134,6 @@ def get_room_availability(
     active_booking_statuses: tuple[str, ...] = ACTIVE_BOOKING_STATUSES,
 ) -> list[RoomAvailability]:
     """Возвращает список аудиторий с информацией, свободны они или заняты."""
-
     if time_to_minutes(start_time) >= time_to_minutes(end_time):
         raise ValueError(f"Некорректный интервал поиска: {start_time}-{end_time}")
 
@@ -223,7 +215,6 @@ def find_free_rooms(
     room_query: str | None = None,
 ) -> list[RoomAvailability]:
     """Возвращает только свободные аудитории."""
-
     availability = get_room_availability(
         session=session,
         booking_date=booking_date,
@@ -245,7 +236,6 @@ def is_room_free(
     week_type: str = "all",
 ) -> bool:
     """Проверяет, свободна ли конкретная аудитория."""
-
     room_name = room_name.strip()
 
     availability = get_room_availability(

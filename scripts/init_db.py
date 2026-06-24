@@ -3,6 +3,7 @@ from roomkeeper.db.session import DEFAULT_DATABASE_URL
 
 
 def main() -> None:
+    """Создаёт таблицы базы данных."""
     # создаем все таблицы базы данных
     create_tables()
     # выводим адрес созданной базы данных

@@ -42,6 +42,7 @@ class Room(Base):
     )
 
     def __repr__(self) -> str:
+        """Возвращает строковое представление аудитории."""
         # удобное строковое представление объекта
         return f"Room(id={self.id!r}, name={self.name!r})"
 
@@ -94,6 +95,7 @@ class ScheduleSlot(Base):
     )
 
     def __repr__(self) -> str:
+        """Возвращает строковое представление занятия из расписания."""
         # удобное строковое представление объекта
         return (
             f"ScheduleSlot(id={self.id!r}, room_id={self.room_id!r}, "
@@ -151,6 +153,7 @@ class Booking(Base):
     )
 
     def __repr__(self) -> str:
+        """Возвращает строковое представление заявки на бронирование."""
         # удобное строковое представление объекта
         return (
             f"Booking(id={self.id!r}, room_id={self.room_id!r}, "

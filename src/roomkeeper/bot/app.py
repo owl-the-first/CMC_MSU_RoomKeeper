@@ -16,7 +16,6 @@ from roomkeeper.db.session import get_session_factory
 
 def build_application(config: BotConfig) -> Application:
     """Создаёт Telegram-приложение и регистрирует команды."""
-
     application = (
         ApplicationBuilder()
         .token(config.token)
@@ -44,7 +43,6 @@ def build_application(config: BotConfig) -> Application:
 
 def run_bot() -> None:
     """Запускает Telegram-бота."""
-
     config = load_bot_config()
     application = build_application(config)
 

@@ -17,6 +17,7 @@ ROOM_RE = re.compile(
 
 
 def normalize_room(room: str) -> str:
+    """Приводит название аудитории к единому виду."""
     room = room.strip()
     room = room.replace("–", "-")
     room = re.sub(r"\s+", "", room)
@@ -38,6 +39,7 @@ def normalize_room(room: str) -> str:
 
 
 def extract_rooms_from_line(line: str) -> list[str]:
+    """Извлекает названия аудиторий из строки расписания."""
     rooms = [normalize_room(match.group(0)) for match in ROOM_RE.finditer(line)]
 
     result: list[str] = []

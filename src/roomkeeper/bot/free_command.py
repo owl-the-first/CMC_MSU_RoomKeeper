@@ -23,7 +23,6 @@ class FreeRoomsRequest:
 
 def get_free_command_usage() -> str:
     """Возвращает подсказку по использованию команды /free."""
-
     return (
         "Использование:\n"
         "/free ДАТА НАЧАЛО КОНЕЦ [ТИП_НЕДЕЛИ] [АУДИТОРИЯ]\n\n"
@@ -42,7 +41,6 @@ def get_free_command_usage() -> str:
 
 def parse_free_rooms_request(args: Sequence[str]) -> FreeRoomsRequest:
     """Разбирает аргументы команды /free."""
-
     if len(args) < 3:
         raise ValueError(get_free_command_usage())
 
@@ -98,7 +96,6 @@ def format_free_rooms_message(
     rooms: list[RoomAvailability],
 ) -> str:
     """Формирует сообщение со списком свободных аудиторий."""
-
     if not rooms:
         return (
             "Свободные аудитории не найдены.\n\n"
