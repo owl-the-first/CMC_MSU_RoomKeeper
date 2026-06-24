@@ -3,7 +3,12 @@ from __future__ import annotations
 from telegram import Update
 from telegram.ext import ContextTypes
 
-from roomkeeper.booking.bookings import create_booking_request
+from roomkeeper.booking.bookings import (
+    cancel_user_booking,
+    create_booking_request,
+    get_room_names_for_bookings,
+    get_user_bookings,
+)
 from roomkeeper.bot.book_command import (
     get_book_command_usage,
     parse_book_room_request,
@@ -13,7 +18,19 @@ from roomkeeper.bot.free_command import (
     get_free_command_usage,
     parse_free_rooms_request,
 )
+from roomkeeper.bot.user_bookings_command import (
+    format_user_bookings_message,
+    get_cancel_booking_usage,
+    get_user_bookings_usage,
+    parse_cancel_booking_request,
+)
 from roomkeeper.search.free_rooms import find_free_rooms
+
+
+def get_session_factory(context: ContextTypes.DEFAULT_TYPE):
+    """Достаёт фабрику сессий БД из данных приложения."""
+
+    return context.application.bot_data.get("session_factory")
 
 
 async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -28,7 +45,9 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
         "Доступные команды:\n"
         "/help — показать справку\n"
         "/free — найти свободные аудитории\n"
-        "/book — создать заявку на бронирование"
+        "/book — создать заявку на бронирование\n"
+        "/my_bookings — показать мои заявки\n"
+        "/cancel_booking — отменить заявку"
     )
 
     if update.message is not None:
@@ -43,11 +62,13 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
         "/start — запустить бота\n"
         "/help — показать справку\n"
         "/free — найти свободные аудитории\n"
-        "/book — создать заявку на бронирование\n\n"
+        "/book — создать заявку на бронирование\n"
+        "/my_bookings — показать мои заявки\n"
+        "/cancel_booking — отменить заявку\n\n"
         f"{get_free_command_usage()}\n\n"
         f"{get_book_command_usage()}\n\n"
-        "Скоро появится:\n"
-        "/my_bookings — посмотреть свои заявки"
+        f"{get_user_bookings_usage()}\n\n"
+        f"{get_cancel_booking_usage()}"
     )
 
     if update.message is not None:
@@ -66,7 +87,7 @@ async def free_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
         await update.message.reply_text(str(error))
         return
 
-    session_factory = context.application.bot_data.get("session_factory")
+    session_factory = get_session_factory(context)
 
     if session_factory is None:
         await update.message.reply_text(
@@ -99,7 +120,7 @@ async def book_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
         await update.message.reply_text(str(error))
         return
 
-    session_factory = context.application.bot_data.get("session_factory")
+    session_factory = get_session_factory(context)
 
     if session_factory is None:
         await update.message.reply_text(
@@ -126,6 +147,80 @@ async def book_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
             end_time=request.end_time,
             purpose=request.purpose,
             week_type=request.week_type,
+        )
+
+    await update.message.reply_text(result.message)
+
+
+async def my_bookings_command(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE,
+) -> None:
+    """Обрабатывает команду /my_bookings."""
+
+    if update.message is None:
+        return
+
+    session_factory = get_session_factory(context)
+
+    if session_factory is None:
+        await update.message.reply_text(
+            "Ошибка настройки бота: не удалось подключиться к базе данных."
+        )
+        return
+
+    user = update.effective_user
+
+    if user is None:
+        await update.message.reply_text("Не удалось определить пользователя Telegram.")
+        return
+
+    with session_factory() as session:
+        bookings = get_user_bookings(
+            session=session,
+            user_telegram_id=str(user.id),
+        )
+        room_names = get_room_names_for_bookings(session, bookings)
+
+    await update.message.reply_text(
+        format_user_bookings_message(bookings, room_names)
+    )
+
+
+async def cancel_booking_command(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE,
+) -> None:
+    """Обрабатывает команду /cancel_booking."""
+
+    if update.message is None:
+        return
+
+    try:
+        booking_id = parse_cancel_booking_request(context.args)
+    except ValueError as error:
+        await update.message.reply_text(str(error))
+        return
+
+    session_factory = get_session_factory(context)
+
+    if session_factory is None:
+        await update.message.reply_text(
+            "Ошибка настройки бота: не удалось подключиться к базе данных."
+        )
+        return
+
+    user = update.effective_user
+
+    if user is None:
+        await update.message.reply_text("Не удалось определить пользователя Telegram.")
+        return
+
+    with session_factory() as session:
+        result = cancel_user_booking(
+            session=session,
+            booking_id=booking_id,
+            user_telegram_id=str(user.id),
         )
 
     await update.message.reply_text(result.message)
