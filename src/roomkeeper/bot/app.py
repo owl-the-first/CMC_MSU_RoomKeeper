@@ -3,7 +3,12 @@ from __future__ import annotations
 from telegram.ext import Application, ApplicationBuilder, CommandHandler
 
 from roomkeeper.bot.config import BotConfig, load_bot_config
-from roomkeeper.bot.handlers import free_command, help_command, start_command
+from roomkeeper.bot.handlers import (
+    book_command,
+    free_command,
+    help_command,
+    start_command,
+)
 from roomkeeper.db.session import get_session_factory
 
 
@@ -27,7 +32,7 @@ def build_application(config: BotConfig) -> Application:
     application.add_handler(CommandHandler("start", start_command))
     application.add_handler(CommandHandler("help", help_command))
     application.add_handler(CommandHandler("free", free_command))
-
+    application.add_handler(CommandHandler("book", book_command))
     return application
 
 
