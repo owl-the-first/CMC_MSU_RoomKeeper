@@ -3,7 +3,6 @@ from pathlib import Path
 from roomkeeper.db.import_schedule import import_schedule_slots
 from roomkeeper.db.session import DEFAULT_DATABASE_URL
 
-
 # путь к JSON-файлу с расписанием
 SCHEDULE_JSON = Path("data/parsed/schedule_slots.json")
 

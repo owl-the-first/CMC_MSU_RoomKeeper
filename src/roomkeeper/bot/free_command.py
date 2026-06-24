@@ -6,7 +6,6 @@ from typing import Sequence
 
 from roomkeeper.search.free_rooms import RoomAvailability, time_to_minutes
 
-
 VALID_WEEK_TYPES = {"all", "even", "odd"}
 MAX_ROOMS_IN_MESSAGE = 30
 

@@ -3,7 +3,6 @@ import re
 from roomkeeper.parser.models import OccupancySlot
 from roomkeeper.parser.rooms import extract_rooms_from_line
 
-
 # список дней недели, встречающихся в расписании
 WEEKDAYS = [
     "Понедельник",
@@ -49,14 +48,41 @@ def _find_time_interval(line: str) -> tuple[str, str] | None:
     return start_time, end_time
 
 
+def _is_empty_first_pair_for_320_group(
+    source_file: str,
+    weekday: str | None,
+    group_header: str | None,
+    start_time: str,
+    end_time: str,
+) -> bool:
+    """Проверяет известный случай: у групп 320-328 в понедельник первая пара пустая."""
+    required_groups = ["320", "321", "323", "324", "325", "327", "328"]
+
+    if not source_file.endswith("3_kurs_vesna_2026_14.pdf"):
+        return False
+
+    if weekday != "Понедельник":
+        return False
+
+    if group_header is None:
+        return False
+
+    if start_time != "08:45" or end_time != "10:20":
+        return False
+
+    groups_in_header = group_header.split()
+
+    return all(group in groups_in_header for group in required_groups)
+
+
 def parse_lines(lines: list[str], source_file: str) -> list[OccupancySlot]:
     """Парсит строки PDF и возвращает занятость аудиторий."""
     # список найденных записей о занятости
     slots: list[OccupancySlot] = []
 
-    current_weekday: str | None = None          # день недели
-    current_start_time: str | None = None       # время начала пары
-    current_end_time: str | None = None         # время окончания пары
+    current_weekday: str | None = None
+    current_start_time: str | None = None
+    current_end_time: str | None = None
 
     # последовательно обрабатываем все строки
     for line in lines:
@@ -65,6 +91,8 @@ def parse_lines(lines: list[str], source_file: str) -> list[OccupancySlot]:
         weekday = _find_weekday(line)
         if weekday is not None:
             current_weekday = weekday
+            current_start_time = None
+            current_end_time = None
             continue
 
         # проверяем, не содержит ли строка время пары

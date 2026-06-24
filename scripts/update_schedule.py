@@ -6,7 +6,6 @@ from roomkeeper.parser.pdf_text import extract_lines_from_pdf
 from roomkeeper.parser.schedule_parser import parse_lines
 from roomkeeper.parser.source_loader import download_pdf, find_schedule_pdfs
 
-
 RAW_DIR = Path("data/raw")                          # каталог для хранения скачанных PDF-файлов
 PARSED_DIR = Path("data/parsed")                    # каталог для хранения результатов парсинга
 OUTPUT_FILE = PARSED_DIR / "schedule_slots.json"    # файл, в который сохраняется итоговое расписание

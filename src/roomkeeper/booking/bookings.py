@@ -9,7 +9,6 @@ from sqlalchemy.orm import Session
 from roomkeeper.db.models import Booking, Room
 from roomkeeper.search.free_rooms import is_room_free
 
-
 ACTIVE_BOOKING_STATUSES = {"pending", "approved"}
 
 

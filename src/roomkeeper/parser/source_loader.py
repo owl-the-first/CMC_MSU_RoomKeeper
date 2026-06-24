@@ -6,7 +6,6 @@ from bs4 import BeautifulSoup
 
 from roomkeeper.parser.models import SchedulePdf
 
-
 # страница с расписанием
 SCHEDULE_PAGE_URL = "https://cs.msu.ru/studies/schedule"
 

@@ -5,7 +5,6 @@ from pathlib import Path
 from roomkeeper.parser.pdf_text import extract_lines_from_pdf
 from roomkeeper.parser.schedule_parser import parse_lines
 
-
 RAW_DIR = Path("data/raw")                              # каталог с исходными PDF-файлами
 PARSED_DIR = Path("data/parsed")                        # каталог для сохранения результатов парсинга
 OUTPUT_FILE = PARSED_DIR / "schedule_slots.json"        # файл, в который будет записан итоговый JSON

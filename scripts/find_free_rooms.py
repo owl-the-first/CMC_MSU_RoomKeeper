@@ -4,8 +4,8 @@ import argparse
 from datetime import date
 
 from roomkeeper.db.session import DEFAULT_DATABASE_URL, get_session_factory
-from roomkeeper.search.free_rooms import find_free_rooms, get_room_availability
 from roomkeeper.parser.rooms import ROOM_RE, normalize_room
+from roomkeeper.search.free_rooms import find_free_rooms, get_room_availability
 
 
 def parse_args() -> argparse.Namespace:

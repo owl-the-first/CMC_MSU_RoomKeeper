@@ -4,7 +4,6 @@ from typing import Sequence
 
 from roomkeeper.db.models import Booking
 
-
 MAX_BOOKINGS_IN_MESSAGE = 10
 
 

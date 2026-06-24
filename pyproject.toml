@@ -40,8 +40,15 @@ testpaths = ["tests"]
 pythonpath = ["src"]
 
 [tool.ruff]
-line-length = 88
+line-length = 120
 target-version = "py311"
 
 [tool.ruff.lint]
 select = ["E", "F", "I"]
+
+[tool.coverage.run]
+source = ["src/roomkeeper"]
+
+[tool.coverage.report]
+fail_under = 75
+show_missing = true
