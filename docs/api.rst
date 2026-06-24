@@ -35,9 +35,16 @@ API проекта
 Модули базы данных
 ------------------
 
-.. automodule:: roomkeeper.db.models
+.. autoclass:: roomkeeper.db.models.Room
    :members:
-   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: roomkeeper.db.models.ScheduleSlot
+   :members:
+   :show-inheritance:
+
+.. autoclass:: roomkeeper.db.models.Booking
+   :members:
    :show-inheritance:
 
 .. automodule:: roomkeeper.db.repository
