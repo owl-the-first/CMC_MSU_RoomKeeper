@@ -73,7 +73,12 @@ def parse_lines(lines: list[str], source_file: str) -> list[OccupancySlot]:
             current_start_time, current_end_time = time_interval
 
         # ищем аудитории в текущей строке
-        rooms = extract_rooms_from_line(line)
+        line_without_time = TIME_RE.sub("", line).strip()
+
+        if line_without_time and line_without_time in extract_rooms_from_line(line_without_time):
+            continue
+
+        rooms = extract_rooms_from_line(line_without_time)
 
         # если аудиторий нет -> переходим к следующей строке
         if not rooms:
