@@ -1,6 +1,6 @@
 from sqlalchemy import select
 
-from roomkeeper.db.models import Booking, Room, ScheduleSlot
+from roomkeeper.db.models import Room, ScheduleSlot
 from roomkeeper.db.repository import count_bookings, count_rooms, count_schedule_slots
 from roomkeeper.db.session import DEFAULT_DATABASE_URL, get_session_factory
 

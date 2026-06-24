@@ -2,7 +2,6 @@ from pathlib import Path
 
 from roomkeeper.parser.source_loader import download_pdf, find_schedule_pdfs
 
-
 # директория для хранения исходных PDF
 RAW_DIR = Path("data/raw")
 

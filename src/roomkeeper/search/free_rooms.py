@@ -8,7 +8,6 @@ from sqlalchemy.orm import Session
 
 from roomkeeper.db.models import Booking, Room, ScheduleSlot
 
-
 # Брони с такими статусами считаем занятыми.
 # pending тоже блокирует аудиторию, чтобы две заявки не попали на одно время.
 ACTIVE_BOOKING_STATUSES = ("pending", "approved")

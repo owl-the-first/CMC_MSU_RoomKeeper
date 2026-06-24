@@ -11,7 +11,6 @@ from roomkeeper.db.repository import (
 )
 from roomkeeper.db.session import DEFAULT_DATABASE_URL, get_session_factory
 
-
 # путь к JSON-файлу с распарсенным расписанием
 DEFAULT_SCHEDULE_JSON = Path("data/parsed/schedule_slots.json")
 

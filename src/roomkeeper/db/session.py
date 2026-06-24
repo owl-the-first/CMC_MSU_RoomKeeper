@@ -3,7 +3,6 @@ from pathlib import Path
 from sqlalchemy import Engine, create_engine
 from sqlalchemy.orm import Session, sessionmaker
 
-
 # адрес базы данных по умолчанию; SQLite-файл будет храниться в каталоге data
 DEFAULT_DATABASE_URL = "sqlite:///data/roomkeeper.db"
 

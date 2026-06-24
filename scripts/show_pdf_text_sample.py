@@ -2,7 +2,6 @@ from pathlib import Path
 
 from roomkeeper.parser.pdf_text import extract_lines_from_pdf
 
-
 # директория с PDF-файлами
 RAW_DIR = Path("data/raw")
 

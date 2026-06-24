@@ -5,8 +5,10 @@ from telegram.ext import Application, ApplicationBuilder, CommandHandler
 from roomkeeper.bot.config import BotConfig, load_bot_config
 from roomkeeper.bot.handlers import (
     book_command,
+    cancel_booking_command,
     free_command,
     help_command,
+    my_bookings_command,
     start_command,
 )
 from roomkeeper.db.session import get_session_factory
@@ -33,6 +35,10 @@ def build_application(config: BotConfig) -> Application:
     application.add_handler(CommandHandler("help", help_command))
     application.add_handler(CommandHandler("free", free_command))
     application.add_handler(CommandHandler("book", book_command))
+    application.add_handler(CommandHandler("my_bookings", my_bookings_command))
+    application.add_handler(CommandHandler("cancel_booking", cancel_booking_command))
+    application.add_handler(CommandHandler("cancel", cancel_booking_command))
+
     return application
 
 
