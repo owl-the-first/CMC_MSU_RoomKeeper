@@ -88,3 +88,34 @@ def count_schedule_slots(session: Session) -> int:
 def count_bookings(session: Session) -> int:
     """Считает количество бронирований."""
     return session.scalar(select(func.count()).select_from(Booking)) or 0
+
+
+def delete_unused_rooms(session: Session) -> int:
+    """Удаляет аудитории, у которых нет расписания и бронирований."""
+    deleted_count = 0
+    rooms = session.scalars(select(Room)).all()
+
+    for room in rooms:
+        has_schedule_slot = (
+            session.scalar(
+                select(ScheduleSlot.id)
+                .where(ScheduleSlot.room_id == room.id)
+                .limit(1)
+            )
+            is not None
+        )
+
+        has_booking = (
+            session.scalar(
+                select(Booking.id)
+                .where(Booking.room_id == room.id)
+                .limit(1)
+            )
+            is not None
+        )
+
+        if not has_schedule_slot and not has_booking:
+            session.delete(room)
+            deleted_count += 1
+
+    return deleted_count

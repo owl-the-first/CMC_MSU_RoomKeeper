@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass
 from datetime import date
 
@@ -203,7 +204,7 @@ def get_room_availability(
             )
         )
 
-    return result
+    return sorted(result, key=lambda item: _room_sort_key(item.room_name))
 
 
 def find_free_rooms(
@@ -252,3 +253,29 @@ def is_room_free(
             return room.is_free
 
     return False
+
+
+def _room_sort_key(room_name: str) -> tuple[int, int, str]:
+    """Сортирует аудитории естественно: 64, 71, 72, 230, ..., П-5, МЗ-0."""
+    if room_name.isdigit():
+        return (0, int(room_name), "")
+
+    letter_room_match = re.fullmatch(r"(\d+)-([а-я])", room_name)
+
+    if letter_room_match is not None:
+        number, suffix = letter_room_match.groups()
+        return (0, int(number), suffix)
+
+    projector_match = re.fullmatch(r"П-(\d+)([а-я]?)", room_name)
+
+    if projector_match is not None:
+        number, suffix = projector_match.groups()
+        return (1, int(number), suffix)
+
+    mz_match = re.fullmatch(r"МЗ-(\d+)", room_name)
+
+    if mz_match is not None:
+        number = mz_match.group(1)
+        return (2, int(number), "")
+
+    return (3, 0, room_name)

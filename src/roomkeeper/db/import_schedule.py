@@ -8,6 +8,7 @@ from roomkeeper.db.repository import (
     clear_schedule_slots,
     count_rooms,
     count_schedule_slots,
+    delete_unused_rooms,
 )
 from roomkeeper.db.session import DEFAULT_DATABASE_URL, get_session_factory
 
@@ -80,7 +81,7 @@ def import_schedule_slots(
             )
 
             imported_slots += 1                 # увеличиваем счетчик
-
+    delete_unused_rooms(session)
     # открываем новую сессию для подсчета статистики
     with session_factory() as session:
         rooms_count = count_rooms(session)
