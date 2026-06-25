@@ -5,6 +5,7 @@ from dataclasses import dataclass
 
 from dotenv import load_dotenv
 
+from roomkeeper.bot.admin_access import parse_admin_ids
 from roomkeeper.db.session import DEFAULT_DATABASE_URL
 from roomkeeper.i18n import DEFAULT_LOCALE, normalize_locale
 
@@ -16,6 +17,7 @@ class BotConfig:
     token: str
     database_url: str = DEFAULT_DATABASE_URL
     default_locale: str = DEFAULT_LOCALE
+    admin_telegram_ids: frozenset[str] = frozenset()
 
 
 def load_bot_config(load_env_file: bool = True) -> BotConfig:
@@ -40,8 +42,11 @@ def load_bot_config(load_env_file: bool = True) -> BotConfig:
         os.getenv("ROOMKEEPER_DEFAULT_LOCALE", DEFAULT_LOCALE)
     )
 
+    admin_telegram_ids = parse_admin_ids(os.getenv("TELEGRAM_ADMIN_IDS", ""))
+
     return BotConfig(
         token=token,
         database_url=database_url,
         default_locale=default_locale,
+        admin_telegram_ids=admin_telegram_ids,
     )

@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cmc-msu-roomkeeper 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-25 09:20+0300\n"
+"POT-Creation-Date: 2026-06-25 10:30+0300\n"
 "PO-Revision-Date: 2026-06-25 09:20+0300\n"
 "Last-Translator: CMC MSU RoomKeeper Team\n"
 "Language: en\n"
@@ -15,6 +15,41 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
+
+#: src/roomkeeper/booking/admin.py:53 src/roomkeeper/booking/admin.py:98
+#, python-brace-format
+msgid "Заявка №{booking_id} не найдена."
+msgstr "Request #{booking_id} was not found."
+
+#: src/roomkeeper/booking/admin.py:60
+#, python-brace-format
+msgid "Заявка №{booking_id} уже подтверждена."
+msgstr "Request #{booking_id} is already approved."
+
+#: src/roomkeeper/booking/admin.py:72
+#, python-brace-format
+msgid "Заявку №{booking_id} нельзя подтвердить, потому что её статус: {status}."
+msgstr "Request #{booking_id} cannot be approved because its status is: {status}."
+
+#: src/roomkeeper/booking/admin.py:84
+#, python-brace-format
+msgid "Заявка №{booking_id} подтверждена."
+msgstr "Request #{booking_id} has been approved."
+
+#: src/roomkeeper/booking/admin.py:105
+#, python-brace-format
+msgid "Заявка №{booking_id} уже отклонена."
+msgstr "Request #{booking_id} is already rejected."
+
+#: src/roomkeeper/booking/admin.py:117
+#, python-brace-format
+msgid "Заявку №{booking_id} нельзя отклонить, потому что её статус: {status}."
+msgstr "Request #{booking_id} cannot be rejected because its status is: {status}."
+
+#: src/roomkeeper/booking/admin.py:129
+#, python-brace-format
+msgid "Заявка №{booking_id} отклонена."
+msgstr "Request #{booking_id} has been rejected."
 
 #: src/roomkeeper/booking/bookings.py:59
 #, python-brace-format
@@ -28,7 +63,9 @@ msgstr "Please specify the booking purpose."
 #: src/roomkeeper/booking/bookings.py:83
 #, python-brace-format
 msgid "Аудитория {room_name} занята {booking_date} с {start_time} до {end_time}."
-msgstr "Room {room_name} is busy on {booking_date} from {start_time} to {end_time}."
+msgstr ""
+"Room {room_name} is busy on {booking_date} from {start_time} to "
+"{end_time}."
 
 #: src/roomkeeper/booking/bookings.py:110
 msgid "Заявка на бронирование создана."
@@ -90,12 +127,134 @@ msgstr "Request #{booking_id} cannot be canceled because its status is: {status}
 msgid "Заявка №{booking_id} отменена."
 msgstr "Request #{booking_id} has been canceled."
 
-#: src/roomkeeper/bot/book_command.py:27 src/roomkeeper/bot/free_command.py:28
-#: src/roomkeeper/bot/lang_command.py:11
+#: src/roomkeeper/bot/admin_command.py:17
+msgid "Админ-команды:\n"
+msgstr "Admin commands:\n"
+
+#: src/roomkeeper/bot/admin_command.py:19
+msgid "показать эту справку"
+msgstr "show this help"
+
+#: src/roomkeeper/bot/admin_command.py:22
+msgid "показать заявки, ожидающие решения"
+msgstr "show requests waiting for review"
+
+#: src/roomkeeper/bot/admin_command.py:25
+msgid "подтвердить заявку"
+msgstr "approve a request"
+
+#: src/roomkeeper/bot/admin_command.py:28
+msgid "отклонить заявку"
+msgstr "reject a request"
+
+#: src/roomkeeper/bot/admin_command.py:36 src/roomkeeper/bot/book_command.py:27
+#: src/roomkeeper/bot/free_command.py:28 src/roomkeeper/bot/lang_command.py:11
 #: src/roomkeeper/bot/user_bookings_command.py:14
 #: src/roomkeeper/bot/user_bookings_command.py:23
 msgid "Использование:\n"
 msgstr "Usage:\n"
+
+#: src/roomkeeper/bot/admin_command.py:38
+#: src/roomkeeper/bot/user_bookings_command.py:25
+msgid "Пример:\n"
+msgstr "Example:\n"
+
+#: src/roomkeeper/bot/admin_command.py:45
+#: src/roomkeeper/bot/user_bookings_command.py:40
+msgid "Номер заявки должен быть целым числом."
+msgstr "Request ID must be an integer."
+
+#: src/roomkeeper/bot/admin_command.py:48
+#: src/roomkeeper/bot/user_bookings_command.py:43
+msgid "Номер заявки должен быть положительным числом."
+msgstr "Request ID must be a positive number."
+
+#: src/roomkeeper/bot/admin_command.py:79
+#, python-brace-format
+msgid "Заявка #{booking_id}"
+msgstr "Request #{booking_id}"
+
+#: src/roomkeeper/bot/admin_command.py:80
+#: src/roomkeeper/bot/user_bookings_command.py:84
+#, python-brace-format
+msgid "Аудитория: {room_name}"
+msgstr "Room: {room_name}"
+
+#: src/roomkeeper/bot/admin_command.py:81
+#, python-brace-format
+msgid "Дата: {booking_date}"
+msgstr "Date: {booking_date}"
+
+#: src/roomkeeper/bot/admin_command.py:84
+#: src/roomkeeper/bot/free_command.py:124
+#: src/roomkeeper/bot/user_bookings_command.py:86
+#, python-brace-format
+msgid "Время: {start}–{end}"
+msgstr "Time: {start}–{end}"
+
+#: src/roomkeeper/bot/admin_command.py:88
+#, python-brace-format
+msgid "Пользователь: {user}"
+msgstr "User: {user}"
+
+#: src/roomkeeper/bot/admin_command.py:91
+#: src/roomkeeper/bot/user_bookings_command.py:90
+#, python-brace-format
+msgid "Цель: {purpose}"
+msgstr "Purpose: {purpose}"
+
+#: src/roomkeeper/bot/admin_command.py:102
+msgid "Одобрить"
+msgstr "Approve"
+
+#: src/roomkeeper/bot/admin_command.py:106
+msgid "Отклонить"
+msgstr "Reject"
+
+#: src/roomkeeper/bot/admin_command.py:120
+msgid "Нет заявок, ожидающих решения."
+msgstr "There are no requests waiting for review."
+
+#: src/roomkeeper/bot/admin_command.py:122
+msgid "Заявки, ожидающие решения:"
+msgstr "Requests waiting for review:"
+
+#: src/roomkeeper/bot/admin_command.py:134
+#, python-brace-format
+msgid "Ваша заявка №{booking_id} подтверждена."
+msgstr "Your request #{booking_id} has been approved."
+
+#: src/roomkeeper/bot/admin_command.py:139
+#, python-brace-format
+msgid "Ваша заявка №{booking_id} отклонена."
+msgstr "Your request #{booking_id} has been rejected."
+
+#: src/roomkeeper/bot/admin_command.py:151
+msgid "Неизвестное действие администратора."
+msgstr "Unknown administrator action."
+
+#: src/roomkeeper/bot/admin_command.py:156
+#: src/roomkeeper/bot/admin_command.py:159
+msgid "Некорректный номер заявки."
+msgstr "Invalid request ID."
+
+#: src/roomkeeper/bot/admin_handlers.py:32
+#: src/roomkeeper/bot/admin_handlers.py:222
+msgid "Эта команда доступна только администраторам."
+msgstr "This command is available to administrators only."
+
+#: src/roomkeeper/bot/admin_handlers.py:41 src/roomkeeper/bot/handlers.py:189
+#: src/roomkeeper/bot/handlers.py:237 src/roomkeeper/bot/handlers.py:282
+#: src/roomkeeper/bot/handlers.py:303
+msgid "Не удалось определить пользователя Telegram."
+msgstr "Failed to identify the Telegram user."
+
+#: src/roomkeeper/bot/admin_handlers.py:112
+#: src/roomkeeper/bot/admin_handlers.py:154 src/roomkeeper/bot/handlers.py:145
+#: src/roomkeeper/bot/handlers.py:184 src/roomkeeper/bot/handlers.py:232
+#: src/roomkeeper/bot/handlers.py:277
+msgid "Ошибка настройки бота: не удалось подключиться к базе данных."
+msgstr "Bot configuration error: failed to connect to the database."
 
 #: src/roomkeeper/bot/book_command.py:29 src/roomkeeper/bot/free_command.py:30
 msgid "Примеры:\n"
@@ -167,12 +326,6 @@ msgstr "Free rooms:"
 msgid "Дата: {date}"
 msgstr "Date: {date}"
 
-#: src/roomkeeper/bot/free_command.py:124
-#: src/roomkeeper/bot/user_bookings_command.py:86
-#, python-brace-format
-msgid "Время: {start}–{end}"
-msgstr "Time: {start}–{end}"
-
 #: src/roomkeeper/bot/free_command.py:132
 #, python-brace-format
 msgid "Фильтр: {room_query}"
@@ -185,48 +338,50 @@ msgid_plural "И ещё {count} аудиторий."
 msgstr[0] "And {count} more room."
 msgstr[1] "And {count} more rooms."
 
-#: src/roomkeeper/bot/handlers.py:67
+#: src/roomkeeper/bot/handlers.py:49
 msgid "студент"
 msgstr "student"
 
-#: src/roomkeeper/bot/handlers.py:70
+#: src/roomkeeper/bot/handlers.py:52
 #, python-brace-format
 msgid "Привет, {name}!"
 msgstr "Hello, {name}!"
 
-#: src/roomkeeper/bot/handlers.py:72
+#: src/roomkeeper/bot/handlers.py:54
 msgid "Я RoomKeeper — бот для поиска и бронирования свободных аудиторий ВМК МГУ."
-msgstr "I am RoomKeeper — a bot for finding and booking free classrooms at CMC MSU."
+msgstr ""
+"I am RoomKeeper — a bot for finding and booking free classrooms at CMC "
+"MSU."
 
-#: src/roomkeeper/bot/handlers.py:74
+#: src/roomkeeper/bot/handlers.py:56
 msgid "Доступные команды:\n"
 msgstr "Available commands:\n"
 
-#: src/roomkeeper/bot/handlers.py:76 src/roomkeeper/bot/handlers.py:113
+#: src/roomkeeper/bot/handlers.py:58 src/roomkeeper/bot/handlers.py:95
 msgid "показать справку"
 msgstr "show help"
 
-#: src/roomkeeper/bot/handlers.py:79 src/roomkeeper/bot/handlers.py:116
+#: src/roomkeeper/bot/handlers.py:61 src/roomkeeper/bot/handlers.py:98
 msgid "найти свободные аудитории"
 msgstr "find free rooms"
 
-#: src/roomkeeper/bot/handlers.py:82 src/roomkeeper/bot/handlers.py:119
+#: src/roomkeeper/bot/handlers.py:64 src/roomkeeper/bot/handlers.py:101
 msgid "создать заявку на бронирование"
 msgstr "create a booking request"
 
-#: src/roomkeeper/bot/handlers.py:85 src/roomkeeper/bot/handlers.py:122
+#: src/roomkeeper/bot/handlers.py:67 src/roomkeeper/bot/handlers.py:104
 msgid "показать мои заявки"
 msgstr "show my requests"
 
-#: src/roomkeeper/bot/handlers.py:88 src/roomkeeper/bot/handlers.py:125
+#: src/roomkeeper/bot/handlers.py:70 src/roomkeeper/bot/handlers.py:107
 msgid "отменить заявку"
 msgstr "cancel a request"
 
-#: src/roomkeeper/bot/handlers.py:91 src/roomkeeper/bot/handlers.py:128
+#: src/roomkeeper/bot/handlers.py:73 src/roomkeeper/bot/handlers.py:110
 msgid "сменить язык"
 msgstr "change language"
 
-#: src/roomkeeper/bot/handlers.py:108
+#: src/roomkeeper/bot/handlers.py:90
 msgid ""
 "Доступные команды:\n"
 "\n"
@@ -234,19 +389,9 @@ msgstr ""
 "Available commands:\n"
 "\n"
 
-#: src/roomkeeper/bot/handlers.py:110
+#: src/roomkeeper/bot/handlers.py:92
 msgid "запустить бота"
 msgstr "start the bot"
-
-#: src/roomkeeper/bot/handlers.py:163 src/roomkeeper/bot/handlers.py:202
-#: src/roomkeeper/bot/handlers.py:247 src/roomkeeper/bot/handlers.py:292
-msgid "Ошибка настройки бота: не удалось подключиться к базе данных."
-msgstr "Bot configuration error: failed to connect to the database."
-
-#: src/roomkeeper/bot/handlers.py:207 src/roomkeeper/bot/handlers.py:252
-#: src/roomkeeper/bot/handlers.py:297 src/roomkeeper/bot/handlers.py:318
-msgid "Не удалось определить пользователя Telegram."
-msgstr "Failed to identify the Telegram user."
 
 #: src/roomkeeper/bot/lang_command.py:14
 #, python-brace-format
@@ -262,21 +407,9 @@ msgstr "Locale {locale!r} is not supported."
 msgid "показать ваши последние заявки"
 msgstr "show your latest requests"
 
-#: src/roomkeeper/bot/user_bookings_command.py:25
-msgid "Пример:\n"
-msgstr "Example:\n"
-
 #: src/roomkeeper/bot/user_bookings_command.py:27
 msgid "Также можно коротко:\n"
 msgstr "Short form:\n"
-
-#: src/roomkeeper/bot/user_bookings_command.py:40
-msgid "Номер заявки должен быть целым числом."
-msgstr "Request ID must be an integer."
-
-#: src/roomkeeper/bot/user_bookings_command.py:43
-msgid "Номер заявки должен быть положительным числом."
-msgstr "Request ID must be a positive number."
 
 #: src/roomkeeper/bot/user_bookings_command.py:51
 msgid "ожидает подтверждения"
@@ -306,16 +439,6 @@ msgstr "To create a request, use:\n"
 msgid "Ваши заявки:"
 msgstr "Your requests:"
 
-#: src/roomkeeper/bot/user_bookings_command.py:84
-#, python-brace-format
-msgid "Аудитория: {room_name}"
-msgstr "Room: {room_name}"
-
-#: src/roomkeeper/bot/user_bookings_command.py:90
-#, python-brace-format
-msgid "Цель: {purpose}"
-msgstr "Purpose: {purpose}"
-
 #: src/roomkeeper/bot/user_bookings_command.py:99
 #, python-brace-format
 msgid "И ещё {count} заявка."
@@ -326,3 +449,4 @@ msgstr[1] "And {count} more requests."
 #: src/roomkeeper/bot/user_bookings_command.py:105
 msgid "Чтобы отменить заявку, напишите:"
 msgstr "To cancel a request, send:"
+

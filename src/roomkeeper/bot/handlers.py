@@ -9,6 +9,7 @@ from roomkeeper.booking.bookings import (
     get_room_names_for_bookings,
     get_user_bookings,
 )
+from roomkeeper.bot.admin_handlers import notify_admins_about_booking
 from roomkeeper.bot.book_command import (
     get_book_command_usage,
     parse_book_room_request,
@@ -18,13 +19,14 @@ from roomkeeper.bot.free_command import (
     get_free_command_usage,
     parse_free_rooms_request,
 )
+from roomkeeper.bot.helpers import activate_user_locale, get_session_factory
 from roomkeeper.bot.lang_command import (
     format_current_language_message,
     format_lang_changed_message,
     get_lang_command_usage,
     parse_lang_request,
 )
-from roomkeeper.bot.locale import resolve_user_locale, set_user_locale
+from roomkeeper.bot.locale import set_user_locale
 from roomkeeper.bot.user_bookings_command import (
     format_user_bookings_message,
     get_cancel_booking_usage,
@@ -33,26 +35,6 @@ from roomkeeper.bot.user_bookings_command import (
 )
 from roomkeeper.i18n import _, set_locale
 from roomkeeper.search.free_rooms import find_free_rooms
-
-
-def get_session_factory(context: ContextTypes.DEFAULT_TYPE):
-    """Достаёт фабрику сессий БД из данных приложения."""
-    return context.application.bot_data.get("session_factory")
-
-
-def activate_user_locale(
-    context: ContextTypes.DEFAULT_TYPE,
-    user_telegram_id: str | None,
-    language_code: str | None = None,
-) -> None:
-    """Устанавливает локаль для текущего запроса пользователя."""
-    set_locale(
-        resolve_user_locale(
-            context=context,
-            user_telegram_id=user_telegram_id,
-            language_code=language_code,
-        )
-    )
 
 
 async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -223,6 +205,9 @@ async def book_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
         )
 
     await update.message.reply_text(result.message)
+
+    if result.success and result.booking_id is not None:
+        await notify_admins_about_booking(context, result.booking_id)
 
 
 async def my_bookings_command(
