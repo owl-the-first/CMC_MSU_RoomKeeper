@@ -342,8 +342,8 @@ msgstr "Фильтр: {room_query}"
 msgid "И ещё {count} аудитория."
 msgid_plural "И ещё {count} аудиторий."
 msgstr[0] "И ещё {count} аудитория."
-msgstr[1] "И ещё {count} аудитория."
-msgstr[2] "И ещё {count} аудитория."
+msgstr[1] "И ещё {count} аудитории."
+msgstr[2] "И ещё {count} аудиторий."
 
 #: src/roomkeeper/bot/handlers.py:49
 msgid "студент"
@@ -447,8 +447,8 @@ msgstr "Ваши заявки:"
 msgid "И ещё {count} заявка."
 msgid_plural "И ещё {count} заявок."
 msgstr[0] "И ещё {count} заявка."
-msgstr[1] "И ещё {count} заявка."
-msgstr[2] "И ещё {count} заявка."
+msgstr[1] "И ещё {count} заявки."
+msgstr[2] "И ещё {count} заявок."
 
 #: src/roomkeeper/bot/user_bookings_command.py:105
 msgid "Чтобы отменить заявку, напишите:"
