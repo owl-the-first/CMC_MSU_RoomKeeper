@@ -22,7 +22,7 @@ def task_test() -> dict[str, object]:
     """Run project tests."""
 
     return {
-        "actions": ["python -m pytest"],
+        "actions": ["python -m coverage run -m pytest"],
         "verbosity": 2,
     }
 
@@ -31,10 +31,8 @@ def task_coverage() -> dict[str, object]:
     """Run tests and check coverage threshold."""
 
     return {
-        "actions": [
-            "python -m coverage run -m pytest",
-            "python -m coverage report",
-        ],
+        "task_dep": ["test"],
+        "actions": ["python -m coverage report"],
         "verbosity": 2,
     }
 
@@ -43,6 +41,7 @@ def task_wheel() -> dict[str, object]:
     """Build wheel distribution."""
 
     return {
+        "task_dep": ["i18n_compile"],
         "actions": ["python -m build --wheel"],
         "verbosity": 2,
     }
@@ -61,6 +60,7 @@ def task_build() -> dict[str, object]:
     """Build wheel and source distributions."""
 
     return {
+        "task_dep": ["i18n_compile"],
         "actions": ["python -m build"],
         "verbosity": 2,
     }
