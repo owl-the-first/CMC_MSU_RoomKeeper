@@ -9,6 +9,7 @@ from roomkeeper.booking.bookings import (
     get_room_names_for_bookings,
     get_user_bookings,
 )
+from roomkeeper.bot.admin_handlers import notify_admins_about_booking
 from roomkeeper.bot.book_command import (
     get_book_command_usage,
     parse_book_room_request,
@@ -18,34 +19,58 @@ from roomkeeper.bot.free_command import (
     get_free_command_usage,
     parse_free_rooms_request,
 )
+from roomkeeper.bot.helpers import activate_user_locale, get_session_factory
+from roomkeeper.bot.lang_command import (
+    format_current_language_message,
+    format_lang_changed_message,
+    get_lang_command_usage,
+    parse_lang_request,
+)
+from roomkeeper.bot.locale import set_user_locale
 from roomkeeper.bot.user_bookings_command import (
     format_user_bookings_message,
     get_cancel_booking_usage,
     get_user_bookings_usage,
     parse_cancel_booking_request,
 )
+from roomkeeper.i18n import _, set_locale
 from roomkeeper.search.free_rooms import find_free_rooms
-
-
-def get_session_factory(context: ContextTypes.DEFAULT_TYPE):
-    """Достаёт фабрику сессий БД из данных приложения."""
-    return context.application.bot_data.get("session_factory")
 
 
 async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Обрабатывает команду /start."""
     user = update.effective_user
-    name = user.first_name if user and user.first_name else "студент"
+    activate_user_locale(
+        context,
+        str(user.id) if user else None,
+        user.language_code if user else None,
+    )
+
+    name = user.first_name if user and user.first_name else _("студент")
 
     text = (
-        f"Привет, {name}!\n\n"
-        "Я RoomKeeper — бот для поиска и бронирования свободных аудиторий ВМК МГУ.\n\n"
-        "Доступные команды:\n"
-        "/help — показать справку\n"
-        "/free — найти свободные аудитории\n"
-        "/book — создать заявку на бронирование\n"
-        "/my_bookings — показать мои заявки\n"
-        "/cancel_booking — отменить заявку"
+        _("Привет, {name}!").format(name=name)
+        + "\n\n"
+        + _("Я RoomKeeper — бот для поиска и бронирования свободных аудиторий ВМК МГУ.")
+        + "\n\n"
+        + _("Доступные команды:\n")
+        + "/help — "
+        + _("показать справку")
+        + "\n"
+        + "/free — "
+        + _("найти свободные аудитории")
+        + "\n"
+        + "/book — "
+        + _("создать заявку на бронирование")
+        + "\n"
+        + "/my_bookings — "
+        + _("показать мои заявки")
+        + "\n"
+        + "/cancel_booking — "
+        + _("отменить заявку")
+        + "\n"
+        + "/lang — "
+        + _("сменить язык")
     )
 
     if update.message is not None:
@@ -54,18 +79,41 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
 
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Обрабатывает команду /help."""
+    user = update.effective_user
+    activate_user_locale(
+        context,
+        str(user.id) if user else None,
+        user.language_code if user else None,
+    )
+
     text = (
-        "Доступные команды:\n\n"
-        "/start — запустить бота\n"
-        "/help — показать справку\n"
-        "/free — найти свободные аудитории\n"
-        "/book — создать заявку на бронирование\n"
-        "/my_bookings — показать мои заявки\n"
-        "/cancel_booking — отменить заявку\n\n"
-        f"{get_free_command_usage()}\n\n"
-        f"{get_book_command_usage()}\n\n"
-        f"{get_user_bookings_usage()}\n\n"
-        f"{get_cancel_booking_usage()}"
+        _("Доступные команды:\n\n")
+        + "/start — "
+        + _("запустить бота")
+        + "\n"
+        + "/help — "
+        + _("показать справку")
+        + "\n"
+        + "/free — "
+        + _("найти свободные аудитории")
+        + "\n"
+        + "/book — "
+        + _("создать заявку на бронирование")
+        + "\n"
+        + "/my_bookings — "
+        + _("показать мои заявки")
+        + "\n"
+        + "/cancel_booking — "
+        + _("отменить заявку")
+        + "\n"
+        + "/lang — "
+        + _("сменить язык")
+        + "\n\n"
+        + f"{get_free_command_usage()}\n\n"
+        + f"{get_book_command_usage()}\n\n"
+        + f"{get_user_bookings_usage()}\n\n"
+        + f"{get_cancel_booking_usage()}\n\n"
+        + f"{get_lang_command_usage()}"
     )
 
     if update.message is not None:
@@ -77,6 +125,13 @@ async def free_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
     if update.message is None:
         return
 
+    user = update.effective_user
+    activate_user_locale(
+        context,
+        str(user.id) if user else None,
+        user.language_code if user else None,
+    )
+
     try:
         request = parse_free_rooms_request(context.args)
     except ValueError as error:
@@ -87,7 +142,7 @@ async def free_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
 
     if session_factory is None:
         await update.message.reply_text(
-            "Ошибка настройки бота: не удалось подключиться к базе данных."
+            _("Ошибка настройки бота: не удалось подключиться к базе данных.")
         )
         return
 
@@ -109,6 +164,13 @@ async def book_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
     if update.message is None:
         return
 
+    user = update.effective_user
+    activate_user_locale(
+        context,
+        str(user.id) if user else None,
+        user.language_code if user else None,
+    )
+
     try:
         request = parse_book_room_request(context.args)
     except ValueError as error:
@@ -119,14 +181,12 @@ async def book_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
 
     if session_factory is None:
         await update.message.reply_text(
-            "Ошибка настройки бота: не удалось подключиться к базе данных."
+            _("Ошибка настройки бота: не удалось подключиться к базе данных.")
         )
         return
 
-    user = update.effective_user
-
     if user is None:
-        await update.message.reply_text("Не удалось определить пользователя Telegram.")
+        await update.message.reply_text(_("Не удалось определить пользователя Telegram."))
         return
 
     user_name = user.username or user.full_name
@@ -146,6 +206,9 @@ async def book_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
 
     await update.message.reply_text(result.message)
 
+    if result.success and result.booking_id is not None:
+        await notify_admins_about_booking(context, result.booking_id)
+
 
 async def my_bookings_command(
     update: Update,
@@ -155,18 +218,23 @@ async def my_bookings_command(
     if update.message is None:
         return
 
+    user = update.effective_user
+    activate_user_locale(
+        context,
+        str(user.id) if user else None,
+        user.language_code if user else None,
+    )
+
     session_factory = get_session_factory(context)
 
     if session_factory is None:
         await update.message.reply_text(
-            "Ошибка настройки бота: не удалось подключиться к базе данных."
+            _("Ошибка настройки бота: не удалось подключиться к базе данных.")
         )
         return
 
-    user = update.effective_user
-
     if user is None:
-        await update.message.reply_text("Не удалось определить пользователя Telegram.")
+        await update.message.reply_text(_("Не удалось определить пользователя Telegram."))
         return
 
     with session_factory() as session:
@@ -189,6 +257,13 @@ async def cancel_booking_command(
     if update.message is None:
         return
 
+    user = update.effective_user
+    activate_user_locale(
+        context,
+        str(user.id) if user else None,
+        user.language_code if user else None,
+    )
+
     try:
         booking_id = parse_cancel_booking_request(context.args)
     except ValueError as error:
@@ -199,14 +274,12 @@ async def cancel_booking_command(
 
     if session_factory is None:
         await update.message.reply_text(
-            "Ошибка настройки бота: не удалось подключиться к базе данных."
+            _("Ошибка настройки бота: не удалось подключиться к базе данных.")
         )
         return
 
-    user = update.effective_user
-
     if user is None:
-        await update.message.reply_text("Не удалось определить пользователя Telegram.")
+        await update.message.reply_text(_("Не удалось определить пользователя Telegram."))
         return
 
     with session_factory() as session:
@@ -217,3 +290,31 @@ async def cancel_booking_command(
         )
 
     await update.message.reply_text(result.message)
+
+
+async def lang_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """Обрабатывает команду /lang."""
+    if update.message is None:
+        return
+
+    user = update.effective_user
+
+    if user is None:
+        await update.message.reply_text(_("Не удалось определить пользователя Telegram."))
+        return
+
+    if not context.args:
+        activate_user_locale(context, str(user.id), user.language_code)
+        await update.message.reply_text(format_current_language_message())
+        return
+
+    try:
+        locale = parse_lang_request(context.args)
+    except ValueError as error:
+        activate_user_locale(context, str(user.id), user.language_code)
+        await update.message.reply_text(str(error))
+        return
+
+    set_user_locale(context, str(user.id), locale)
+    set_locale(locale)
+    await update.message.reply_text(format_lang_changed_message(locale))

@@ -6,7 +6,9 @@ from datetime import date
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
+from roomkeeper.bot.user_bookings_command import format_status
 from roomkeeper.db.models import Booking, Room
+from roomkeeper.i18n import _
 from roomkeeper.search.free_rooms import is_room_free
 
 ACTIVE_BOOKING_STATUSES = {"pending", "approved"}
@@ -54,13 +56,15 @@ def create_booking_request(
     if room is None:
         return BookingCreationResult(
             success=False,
-            message=f"Аудитория {room_name} не найдена в базе.",
+            message=_("Аудитория {room_name} не найдена в базе.").format(
+                room_name=room_name
+            ),
         )
 
     if not purpose.strip():
         return BookingCreationResult(
             success=False,
-            message="Нужно указать цель бронирования.",
+            message=_("Нужно указать цель бронирования."),
         )
 
     room_is_free = is_room_free(
@@ -75,9 +79,13 @@ def create_booking_request(
     if not room_is_free:
         return BookingCreationResult(
             success=False,
-            message=(
-                f"Аудитория {room.name} занята "
-                f"{booking_date.isoformat()} с {start_time} до {end_time}."
+            message=_(
+                "Аудитория {room_name} занята {booking_date} с {start_time} до {end_time}."
+            ).format(
+                room_name=room.name,
+                booking_date=booking_date.isoformat(),
+                start_time=start_time,
+                end_time=end_time,
             ),
         )
 
@@ -99,13 +107,17 @@ def create_booking_request(
     return BookingCreationResult(
         success=True,
         message=(
-            "Заявка на бронирование создана.\n\n"
-            f"Номер заявки: {booking.id}\n"
-            f"Аудитория: {room.name}\n"
-            f"Дата: {booking_date.isoformat()}\n"
-            f"Время: {start_time}–{end_time}\n"
-            f"Цель: {purpose.strip()}\n"
-            "Статус: pending"
+            _("Заявка на бронирование создана.")
+            + "\n\n"
+            + _("Номер заявки: {booking_id}\n").format(booking_id=booking.id)
+            + _("Аудитория: {room_name}\n").format(room_name=room.name)
+            + _("Дата: {booking_date}\n").format(booking_date=booking_date.isoformat())
+            + _("Время: {start_time}–{end_time}\n").format(
+                start_time=start_time,
+                end_time=end_time,
+            )
+            + _("Цель: {purpose}\n").format(purpose=purpose.strip())
+            + _("Статус: {status}").format(status=format_status("pending"))
         ),
         booking_id=booking.id,
     )
@@ -158,31 +170,36 @@ def cancel_user_booking(
     if booking is None:
         return BookingCancelResult(
             success=False,
-            message=f"Заявка №{booking_id} не найдена среди ваших заявок.",
+            message=_("Заявка №{booking_id} не найдена среди ваших заявок.").format(
+                booking_id=booking_id
+            ),
             booking_id=booking_id,
         )
 
     if booking.status == "canceled":
         return BookingCancelResult(
             success=False,
-            message=f"Заявка №{booking_id} уже отменена.",
+            message=_("Заявка №{booking_id} уже отменена.").format(
+                booking_id=booking_id
+            ),
             booking_id=booking_id,
         )
 
     if booking.status == "rejected":
         return BookingCancelResult(
             success=False,
-            message=f"Заявка №{booking_id} уже отклонена, отменять её не нужно.",
+            message=_(
+                "Заявка №{booking_id} уже отклонена, отменять её не нужно."
+            ).format(booking_id=booking_id),
             booking_id=booking_id,
         )
 
     if booking.status not in ACTIVE_BOOKING_STATUSES:
         return BookingCancelResult(
             success=False,
-            message=(
-                f"Заявку №{booking_id} нельзя отменить, "
-                f"потому что её статус: {booking.status}."
-            ),
+            message=_(
+                "Заявку №{booking_id} нельзя отменить, потому что её статус: {status}."
+            ).format(booking_id=booking_id, status=booking.status),
             booking_id=booking_id,
         )
 
@@ -191,6 +208,6 @@ def cancel_user_booking(
 
     return BookingCancelResult(
         success=True,
-        message=f"Заявка №{booking_id} отменена.",
+        message=_("Заявка №{booking_id} отменена.").format(booking_id=booking_id),
         booking_id=booking_id,
     )

@@ -14,6 +14,8 @@ def test_load_bot_config_reads_environment(monkeypatch) -> None:
     assert config == BotConfig(
         token="123456:test-token",
         database_url="sqlite:///test.db",
+        default_locale="ru",
+        admin_telegram_ids=frozenset(),
     )
 
 
@@ -27,6 +29,17 @@ def test_load_bot_config_uses_default_database_url(monkeypatch) -> None:
 
     assert config.token == "123456:test-token"
     assert config.database_url == "sqlite:///data/roomkeeper.db"
+
+
+def test_load_bot_config_reads_admin_ids(monkeypatch) -> None:
+    """Проверяем чтение списка администраторов."""
+
+    monkeypatch.setenv("TELEGRAM_BOT_TOKEN", "123456:test-token")
+    monkeypatch.setenv("TELEGRAM_ADMIN_IDS", "111,222")
+
+    config = load_bot_config(load_env_file=False)
+
+    assert config.admin_telegram_ids == frozenset({"111", "222"})
 
 
 def test_load_bot_config_requires_token(monkeypatch) -> None:

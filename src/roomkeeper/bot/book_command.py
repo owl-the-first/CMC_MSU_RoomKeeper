@@ -5,6 +5,7 @@ from datetime import date
 from typing import Sequence
 
 from roomkeeper.bot.free_command import VALID_WEEK_TYPES
+from roomkeeper.i18n import _
 from roomkeeper.search.free_rooms import time_to_minutes
 
 
@@ -23,16 +24,21 @@ class BookRoomRequest:
 def get_book_command_usage() -> str:
     """Возвращает подсказку по использованию команды /book."""
     return (
-        "Использование:\n"
-        "/book АУДИТОРИЯ ДАТА НАЧАЛО КОНЕЦ [ТИП_НЕДЕЛИ] ЦЕЛЬ\n\n"
-        "Примеры:\n"
-        "/book 605 2026-06-22 08:45 10:20 подготовка к защите\n"
-        "/book 605 2026-06-22 08:45 10:20 even подготовка к защите\n"
-        "/book П-13 2026-06-22 12:50 14:25 odd встреча команды\n\n"
-        "Тип недели необязателен:\n"
-        "all — любая неделя\n"
-        "even — чётная неделя\n"
-        "odd — нечётная неделя"
+        _("Использование:\n")
+        + "/book АУДИТОРИЯ ДАТА НАЧАЛО КОНЕЦ [ТИП_НЕДЕЛИ] ЦЕЛЬ\n\n"
+        + _("Примеры:\n")
+        + "/book 605 2026-06-22 08:45 10:20 подготовка к защите\n"
+        + "/book 605 2026-06-22 08:45 10:20 even подготовка к защите\n"
+        + "/book П-13 2026-06-22 12:50 14:25 odd встреча команды\n\n"
+        + _("Тип недели необязателен:\n")
+        + "all — "
+        + _("любая неделя")
+        + "\n"
+        + "even — "
+        + _("чётная неделя")
+        + "\n"
+        + "odd — "
+        + _("нечётная неделя")
     )
 
 
@@ -44,13 +50,13 @@ def parse_book_room_request(args: Sequence[str]) -> BookRoomRequest:
     room_name = args[0].strip()
 
     if not room_name:
-        raise ValueError("Нужно указать аудиторию.")
+        raise ValueError(_("Нужно указать аудиторию."))
 
     try:
         booking_date = date.fromisoformat(args[1])
     except ValueError as error:
         raise ValueError(
-            "Дата должна быть в формате YYYY-MM-DD, например 2026-06-22."
+            _("Дата должна быть в формате YYYY-MM-DD, например 2026-06-22.")
         ) from error
 
     start_time = args[2]
@@ -61,11 +67,11 @@ def parse_book_room_request(args: Sequence[str]) -> BookRoomRequest:
         end_minutes = time_to_minutes(end_time)
     except ValueError as error:
         raise ValueError(
-            "Время должно быть в формате HH:MM, например 08:45."
+            _("Время должно быть в формате HH:MM, например 08:45.")
         ) from error
 
     if start_minutes >= end_minutes:
-        raise ValueError("Время начала должно быть меньше времени окончания.")
+        raise ValueError(_("Время начала должно быть меньше времени окончания."))
 
     week_type = "all"
     purpose_parts = list(args[4:])
@@ -77,7 +83,7 @@ def parse_book_room_request(args: Sequence[str]) -> BookRoomRequest:
     purpose = " ".join(purpose_parts).strip()
 
     if not purpose:
-        raise ValueError("Нужно указать цель бронирования.")
+        raise ValueError(_("Нужно указать цель бронирования."))
 
     return BookRoomRequest(
         room_name=room_name,

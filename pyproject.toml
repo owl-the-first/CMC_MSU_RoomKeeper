@@ -30,7 +30,11 @@ dev = [
     "doit",
     "build",
     "sphinx",
+    "Babel",
 ]
+
+[tool.setuptools.package-data]
+roomkeeper = ["locales/**/*.mo"]
 
 [tool.setuptools.packages.find]
 where = ["src"]
