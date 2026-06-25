@@ -13,7 +13,7 @@ def task_lint() -> dict[str, object]:
     """Run source code style checks."""
 
     return {
-        "actions": ["python -m ruff check src tests scripts"],
+        "actions": ["python3 -m ruff check src tests scripts"],
         "verbosity": 2,
     }
 
@@ -23,7 +23,7 @@ def task_test() -> dict[str, object]:
 
     return {
         "task_dep": ["i18n_compile"],
-        "actions": ["python -m coverage run -m pytest"],
+        "actions": ["python3 -m coverage run -m pytest"],
         "verbosity": 2,
     }
 
@@ -33,7 +33,7 @@ def task_coverage() -> dict[str, object]:
 
     return {
         "task_dep": ["test"],
-        "actions": ["python -m coverage report"],
+        "actions": ["python3 -m coverage report"],
         "verbosity": 2,
     }
 
@@ -43,7 +43,7 @@ def task_wheel() -> dict[str, object]:
 
     return {
         "task_dep": ["i18n_compile"],
-        "actions": ["python -m build --wheel"],
+        "actions": ["python3 -m build --wheel"],
         "verbosity": 2,
     }
 
@@ -52,7 +52,7 @@ def task_sdist() -> dict[str, object]:
     """Build source distribution."""
 
     return {
-        "actions": ["python -m build --sdist"],
+        "actions": ["python3 -m build --sdist"],
         "verbosity": 2,
     }
 
@@ -62,7 +62,7 @@ def task_build() -> dict[str, object]:
 
     return {
         "task_dep": ["i18n_compile"],
-        "actions": ["python -m build"],
+        "actions": ["python3 -m build"],
         "verbosity": 2,
     }
 
@@ -82,7 +82,7 @@ def task_docs() -> dict[str, object]:
     """Build HTML documentation."""
 
     return {
-        "actions": ["python -m sphinx -b html docs docs/_build/html"],
+        "actions": ["python3 -m sphinx -b html docs docs/_build/html"],
         "verbosity": 2,
     }
 
