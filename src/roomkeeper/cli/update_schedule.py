@@ -29,7 +29,7 @@ def main() -> None:
         print(f"downloaded: {path}")
 
         lines = extract_lines_from_pdf(path)
-        slots = parse_lines(lines, source=str(path))
+        slots = parse_lines(lines, source_file=str(path))
         all_slots.extend(slots)
 
     data = [asdict(slot) for slot in all_slots]

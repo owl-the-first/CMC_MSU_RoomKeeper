@@ -108,9 +108,9 @@ def test_update_schedule_cli_downloads_parses_and_saves_json(
         calls["pdf_path"] = path
         return ["Понедельник 605", "8.45-10.20"]
 
-    def fake_parse_lines(lines: list[str], source: str):
+    def fake_parse_lines(lines: list[str], source_file: str):
         calls["lines"] = lines
-        calls["source"] = source
+        calls["source"] = source_file
         return [slot]
 
     def fake_asdict(parsed_slot) -> dict[str, str]:
