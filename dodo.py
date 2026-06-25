@@ -22,6 +22,7 @@ def task_test() -> dict[str, object]:
     """Run project tests."""
 
     return {
+        "task_dep": ["i18n_compile"],
         "actions": ["python -m coverage run -m pytest"],
         "verbosity": 2,
     }
