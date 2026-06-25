@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from dotenv import load_dotenv
 
 from roomkeeper.db.session import DEFAULT_DATABASE_URL
+from roomkeeper.i18n import DEFAULT_LOCALE, normalize_locale
 
 
 @dataclass(frozen=True)
@@ -14,6 +15,7 @@ class BotConfig:
 
     token: str
     database_url: str = DEFAULT_DATABASE_URL
+    default_locale: str = DEFAULT_LOCALE
 
 
 def load_bot_config(load_env_file: bool = True) -> BotConfig:
@@ -34,7 +36,12 @@ def load_bot_config(load_env_file: bool = True) -> BotConfig:
     if not database_url:
         database_url = DEFAULT_DATABASE_URL
 
+    default_locale = normalize_locale(
+        os.getenv("ROOMKEEPER_DEFAULT_LOCALE", DEFAULT_LOCALE)
+    )
+
     return BotConfig(
         token=token,
         database_url=database_url,
+        default_locale=default_locale,
     )

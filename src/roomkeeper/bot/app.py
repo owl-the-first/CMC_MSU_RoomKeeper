@@ -8,6 +8,7 @@ from roomkeeper.bot.handlers import (
     cancel_booking_command,
     free_command,
     help_command,
+    lang_command,
     my_bookings_command,
     start_command,
 )
@@ -29,6 +30,7 @@ def build_application(config: BotConfig) -> Application:
     )
 
     application.bot_data["session_factory"] = get_session_factory(config.database_url)
+    application.bot_data["default_locale"] = config.default_locale
 
     application.add_handler(CommandHandler("start", start_command))
     application.add_handler(CommandHandler("help", help_command))
@@ -37,6 +39,7 @@ def build_application(config: BotConfig) -> Application:
     application.add_handler(CommandHandler("my_bookings", my_bookings_command))
     application.add_handler(CommandHandler("cancel_booking", cancel_booking_command))
     application.add_handler(CommandHandler("cancel", cancel_booking_command))
+    application.add_handler(CommandHandler("lang", lang_command))
 
     return application
 

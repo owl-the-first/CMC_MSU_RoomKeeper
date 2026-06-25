@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from datetime import date
 from typing import Sequence
 
+from roomkeeper.i18n import _, ngettext
 from roomkeeper.search.free_rooms import RoomAvailability, time_to_minutes
 
 VALID_WEEK_TYPES = {"all", "even", "odd"}
@@ -24,18 +25,23 @@ class FreeRoomsRequest:
 def get_free_command_usage() -> str:
     """Возвращает подсказку по использованию команды /free."""
     return (
-        "Использование:\n"
-        "/free ДАТА НАЧАЛО КОНЕЦ [ТИП_НЕДЕЛИ] [АУДИТОРИЯ]\n\n"
-        "Примеры:\n"
-        "/free 2026-06-22 08:45 10:20\n"
-        "/free 2026-06-22 08:45 10:20 even\n"
-        "/free 2026-06-22 08:45 10:20 odd\n"
-        "/free 2026-06-22 08:45 10:20 605\n"
-        "/free 2026-06-22 08:45 10:20 even 605\n\n"
-        "Тип недели:\n"
-        "all — любая неделя\n"
-        "even — чётная неделя\n"
-        "odd — нечётная неделя"
+        _("Использование:\n")
+        + "/free ДАТА НАЧАЛО КОНЕЦ [ТИП_НЕДЕЛИ] [АУДИТОРИЯ]\n\n"
+        + _("Примеры:\n")
+        + "/free 2026-06-22 08:45 10:20\n"
+        + "/free 2026-06-22 08:45 10:20 even\n"
+        + "/free 2026-06-22 08:45 10:20 odd\n"
+        + "/free 2026-06-22 08:45 10:20 605\n"
+        + "/free 2026-06-22 08:45 10:20 even 605\n\n"
+        + _("Тип недели:\n")
+        + "all — "
+        + _("любая неделя")
+        + "\n"
+        + "even — "
+        + _("чётная неделя")
+        + "\n"
+        + "odd — "
+        + _("нечётная неделя")
     )
 
 
@@ -48,7 +54,7 @@ def parse_free_rooms_request(args: Sequence[str]) -> FreeRoomsRequest:
         booking_date = date.fromisoformat(args[0])
     except ValueError as error:
         raise ValueError(
-            "Дата должна быть в формате YYYY-MM-DD, например 2026-06-22."
+            _("Дата должна быть в формате YYYY-MM-DD, например 2026-06-22.")
         ) from error
 
     start_time = args[1]
@@ -59,11 +65,11 @@ def parse_free_rooms_request(args: Sequence[str]) -> FreeRoomsRequest:
         end_minutes = time_to_minutes(end_time)
     except ValueError as error:
         raise ValueError(
-            "Время должно быть в формате HH:MM, например 08:45."
+            _("Время должно быть в формате HH:MM, например 08:45.")
         ) from error
 
     if start_minutes >= end_minutes:
-        raise ValueError("Время начала должно быть меньше времени окончания.")
+        raise ValueError(_("Время начала должно быть меньше времени окончания."))
 
     week_type = "all"
     room_query = None
@@ -98,25 +104,32 @@ def format_free_rooms_message(
     """Формирует сообщение со списком свободных аудиторий."""
     if not rooms:
         return (
-            "Свободные аудитории не найдены.\n\n"
-            f"Дата: {request.booking_date.isoformat()}\n"
-            f"Время: {request.start_time}–{request.end_time}\n"
-            f"Тип недели: {request.week_type}"
+            _("Свободные аудитории не найдены.")
+            + "\n\n"
+            + _("Дата: {date}\n").format(date=request.booking_date.isoformat())
+            + _("Время: {start}–{end}\n").format(
+                start=request.start_time,
+                end=request.end_time,
+            )
+            + _("Тип недели: {week_type}").format(week_type=request.week_type)
         )
 
     visible_rooms = rooms[:MAX_ROOMS_IN_MESSAGE]
     hidden_count = len(rooms) - len(visible_rooms)
 
     lines = [
-        "Свободные аудитории:",
+        _("Свободные аудитории:"),
         "",
-        f"Дата: {request.booking_date.isoformat()}",
-        f"Время: {request.start_time}–{request.end_time}",
-        f"Тип недели: {request.week_type}",
+        _("Дата: {date}").format(date=request.booking_date.isoformat()),
+        _("Время: {start}–{end}").format(
+            start=request.start_time,
+            end=request.end_time,
+        ),
+        _("Тип недели: {week_type}").format(week_type=request.week_type),
     ]
 
     if request.room_query:
-        lines.append(f"Фильтр: {request.room_query}")
+        lines.append(_("Фильтр: {room_query}").format(room_query=request.room_query))
 
     lines.append("")
 
@@ -125,6 +138,12 @@ def format_free_rooms_message(
 
     if hidden_count > 0:
         lines.append("")
-        lines.append(f"И ещё {hidden_count} аудиторий.")
+        lines.append(
+            ngettext(
+                "И ещё {count} аудитория.",
+                "И ещё {count} аудиторий.",
+                hidden_count,
+            ).format(count=hidden_count)
+        )
 
     return "\n".join(lines)

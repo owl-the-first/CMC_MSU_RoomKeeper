@@ -84,3 +84,44 @@ def task_docs() -> dict[str, object]:
         "actions": ["python -m sphinx -b html docs docs/_build/html"],
         "verbosity": 2,
     }
+
+
+def task_i18n_extract() -> dict[str, object]:
+    """Extract translatable strings into a POT template."""
+
+    return {
+        "actions": [
+            (
+                "pybabel extract -F babel.cfg "
+                "-o src/roomkeeper/locales/messages.pot src/roomkeeper"
+            ),
+        ],
+        "verbosity": 2,
+    }
+
+
+def task_i18n_update() -> dict[str, object]:
+    """Update locale catalogs from the POT template."""
+
+    return {
+        "actions": [
+            (
+                "pybabel update -i src/roomkeeper/locales/messages.pot "
+                "-d src/roomkeeper/locales -l ru"
+            ),
+            (
+                "pybabel update -i src/roomkeeper/locales/messages.pot "
+                "-d src/roomkeeper/locales -l en"
+            ),
+        ],
+        "verbosity": 2,
+    }
+
+
+def task_i18n_compile() -> dict[str, object]:
+    """Compile locale catalogs to binary MO files."""
+
+    return {
+        "actions": ["pybabel compile -d src/roomkeeper/locales"],
+        "verbosity": 2,
+    }

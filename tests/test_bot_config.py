@@ -14,6 +14,7 @@ def test_load_bot_config_reads_environment(monkeypatch) -> None:
     assert config == BotConfig(
         token="123456:test-token",
         database_url="sqlite:///test.db",
+        default_locale="ru",
     )
 
 
